@@ -1,0 +1,15 @@
+LICENSE
+MANIFEST.in
+README.rst
+setup.cfg
+setup.py
+htmltab/__init__.py
+htmltab/cli.py
+htmltab/types.py
+htmltab/utils.py
+htmltab.egg-info/PKG-INFO
+htmltab.egg-info/SOURCES.txt
+htmltab.egg-info/dependency_links.txt
+htmltab.egg-info/entry_points.txt
+htmltab.egg-info/requires.txt
+htmltab.egg-info/top_level.txt

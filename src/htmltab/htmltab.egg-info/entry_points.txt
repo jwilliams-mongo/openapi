@@ -1,0 +1,3 @@
+[console_scripts]
+htmltab = htmltab.cli:main
+
