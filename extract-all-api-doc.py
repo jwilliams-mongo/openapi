@@ -1,4 +1,3 @@
-
 import os
 import sys
 import subprocess
@@ -20,7 +19,6 @@ api_url_sec_half = ["/reference/api/alerts-get-all-alerts",
       "/reference/api/alert-configurations-enable-disable-config",
       "/reference/api/alert-configurations-delete-config",
       "/reference/api/alert-configurations-get-open-alerts",
-      "/reference/api/api-key-get-all",
       "/reference/api/enable-disable-api-key",
       "/reference/api/delete-api-key",
       "/reference/api/apiKeys-orgs-get-all",
