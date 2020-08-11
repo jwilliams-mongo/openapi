@@ -137,20 +137,24 @@ def main():
 
     #tags_list = ['h2+p+div+table.docutils', 'h2+p+table.docutils', 'h2+div+table.docutils', 'h2+table.docutils', 'h2+table.docutils', 'h3+p+p+table.docutils',
     #'h3+p+table.docutils', 'div#response-elements+h3+p+table.docutils', 'div#response+h3+p+table.docutils']
-    
+
+
+    tag_path = "(//div[@id='request-path-parameters']//table)[1]/tbody/tr"
+    tag_query = "(//div[@id='request-query-parameters']//table)[1]/tbody/tr"
+    tag_body = "(//div[@id='request-body-parameters']//table)[1]/tbody/tr"
     tags_list = ["(//div[@id='response-elements']//table)[1]/tbody/tr", "(//div[@id='response']//table)[1]/tbody/tr"]
     tags_list_2 = ["(//div[@id='response-elements']//table)[2]/tbody/tr", "(//div[@id='response']//table)[2]/tbody/tr"]
     #Request Path Param
 
     if(path_param_checker(soup)):
-        path = subprocess.check_output(['htmltab',url, sys.argv[1]])
+        path = subprocess.check_output(['htmltab', '--select', tag_path, url, sys.argv[1]])
 
         #Request Query Param
         if(query_param_checker(soup)):        
-            query = subprocess.check_output(['htmltab', '--select', '2', url, sys.argv[1]])
+            query = subprocess.check_output(['htmltab', '--select', tag_query, url, sys.argv[1]])
 
             if(body_param_checker(soup)):
-                body = subprocess.check_output(['htmltab', '--select', '3', url, sys.argv[1]])
+                body = subprocess.check_output(['htmltab', '--select', tag_body, url, sys.argv[1]])
 
                 if(response_elems_checker(soup)):
                     for tags in tags_list:
@@ -189,7 +193,7 @@ def main():
 
         
         elif(body_param_checker(soup)):
-            body = subprocess.check_output(['htmltab', '--select', '2', url, sys.argv[1]])
+            body = subprocess.check_output(['htmltab', '--select', tag_body, url, sys.argv[1]])
 
             #Response Elements
             if(response_elems_checker(soup)):
@@ -229,10 +233,10 @@ def main():
 
     elif(query_param_checker(soup)):
         #Request Query Param
-        query = subprocess.check_output(['htmltab', '--select', '1', url, sys.argv[1]])
+        query = subprocess.check_output(['htmltab', '--select', tag_query, url, sys.argv[1]])
 
         if(body_param_checker(soup)):
-            body = subprocess.check_output(['htmltab', '--select', '2', url, sys.argv[1]])
+            body = subprocess.check_output(['htmltab', '--select', tag_body, url, sys.argv[1]])
 
             if(response_elems_checker(soup)):
                 for tags in tags_list:
@@ -268,7 +272,7 @@ def main():
                             continue
 
     elif(body_param_checker(soup)):
-        body = subprocess.check_output(['htmltab', '--select', '1', url, sys.argv[1]])
+        body = subprocess.check_output(['htmltab', '--select', tag_body, url, sys.argv[1]])
 
         if(response_elems_checker(soup)):
             for tags in tags_list:

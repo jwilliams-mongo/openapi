@@ -1,5 +1,5 @@
 from decimal import Decimal, InvalidOperation
-from urlparse import urlparse 
+from urllib.parse import urlparse 
 
 from bs4 import UnicodeDammit
 from click.types import File

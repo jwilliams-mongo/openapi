@@ -6,8 +6,9 @@ output the CSV to ``stdout``.
 """
 import csv
 import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
+import importlib
+importlib.reload(sys)
+#sys.setdefaultencoding('utf8')
 import click
 from lxml.etree import LxmlError
 
