@@ -6,7 +6,7 @@ import requests
 import bs4
 import subprocess
 import re
-
+import string
 
 contains_response_doc = False
 contains_results_embedded_doc = False
@@ -18,9 +18,9 @@ def path_param_checker(soup):
     if(path_param_code):
         path_param_soup = bs4.BeautifulSoup(str(path_param_code[0]), 'lxml')
         if(path_param_soup.find_all('tbody')):
-            with open(sys.argv[1], 'a') as output:
-                writer = csv.writer(output)
-                writer.writerow(["Request Path Parameters"])
+            # with open(sys.argv[1], 'a') as output:
+            #     writer = csv.writer(output)
+            #     writer.writerow(["Request Path Parameters"])
             return True
         else: 
             return False
@@ -33,9 +33,9 @@ def query_param_checker(soup):
     if(query_param_code):
         query_param_soup = bs4.BeautifulSoup(str(query_param_code[0]), 'lxml')
         if(query_param_soup.find_all('tbody')):
-            with open(sys.argv[1], 'a') as output:
-                writer = csv.writer(output)
-                writer.writerow(["Request Query Parameters"])
+            # with open(sys.argv[1], 'a') as output:
+            #     writer = csv.writer(output)
+            #     writer.writerow(["Request Query Parameters"])
             return True
         else:
             return False
@@ -47,9 +47,9 @@ def body_param_checker(soup):
     if(body_param_code):
         body_param_soup = bs4.BeautifulSoup(str(body_param_code[0]), 'lxml')
         if(body_param_soup.find_all('tbody')):
-            with open(sys.argv[1], 'a') as output:
-                writer = csv.writer(output)
-                writer.writerow(["Request Body Parameters"])
+            # with open(sys.argv[1], 'a') as output:
+            #     writer = csv.writer(output)
+            #     writer.writerow(["Request Body Parameters"])
             return True
         else:
             return False
@@ -66,13 +66,13 @@ def response_elems_checker(soup):
         if(response_elements_code_1):
             response_elems_soup = bs4.BeautifulSoup(str(response_elements_code_1[0]), 'lxml')
             if(response_elems_soup.find_all('tbody')):
-                with open(sys.argv[1], 'a') as output:
-                    writer = csv.writer(output)
-                    writer.writerow(["Response Elements"])
+                # with open(sys.argv[1], 'a') as output:
+                #     writer = csv.writer(output)
+                #     writer.writerow(["Response Elements"])
                     
-                    if(response_elems_soup.select('#'+'response-document')):
-                        contains_response_doc = True
-                        writer.writerow(["Response Document"])
+                if(response_elems_soup.select('#'+'response-document')):
+                  contains_response_doc = True
+                  # writer.writerow(["Response Document"])
 
                 return True
             else:
@@ -80,20 +80,118 @@ def response_elems_checker(soup):
         else:
             response_elems_soup_2 = bs4.BeautifulSoup(str(response_elements_code_2[0]), 'lxml')
             if(response_elems_soup_2.find_all('tbody')):
-                with open(sys.argv[1], 'a') as output:
-                    writer = csv.writer(output)
-                    writer.writerow(["Response Elements"])
+                # with open(sys.argv[1], 'a') as output:
+                    # writer = csv.writer(output)
+                    # writer.writerow(["Response Elements"])
 
-                    if(response_elems_soup_2.select('#'+'response-document')):
-                        contains_response_doc = True
-                        writer.writerow(["Response Document"])
+                if(response_elems_soup_2.select('#'+'response-document')):
+                  contains_response_doc = True
+                  # writer.writerow(["Response Document"])
 
                 return True
             else:
                 return False
     return False
 
+def path_param_writer(body):
 
+  path_param_row = [app,title,file_name,base_url,'Path Param','','','','','']
+  printable = set(string.printable)
+  path_param_row[0] = ''.join(filter(lambda x: x in printable, path_param_row[0]))
+  path_param_row[1] = ''.join(filter(lambda x: x in printable, path_param_row[1]))
+  path_param_row[2] = ''.join(filter(lambda x: x in printable, path_param_row[2]))
+  for row in body:
+    if len(row) == 3:
+      path_param_row[5] = row[0]
+      path_param_row[6] = row[1]
+      path_param_row[8] = row[2]
+      with open(sys.argv[1], 'a') as output:
+        writer = csv.writer(output)
+        writer.writerow(path_param_row)
+    else: print(len(row))
+  remove_temp = subprocess.check_output(['rm', 'temp.csv'])
+
+def query_param_writer(body):
+
+  query_param_row = [app,title,file_name,base_url,'Query Param','','','','','']
+  printable = set(string.printable)
+  query_param_row[0] = ''.join(filter(lambda x: x in printable, query_param_row[0]))
+  query_param_row[1] = ''.join(filter(lambda x: x in printable, query_param_row[1]))
+  query_param_row[2] = ''.join(filter(lambda x: x in printable, query_param_row[2]))
+  for row in body:
+    if len(row) == 4:
+      query_param_row[5] = row[0]
+      query_param_row[6] = row[1]
+      query_param_row[8] = row[2]
+      query_param_row[9] = row[3]
+      with open(sys.argv[1], 'a') as output:
+        writer = csv.writer(output)
+        writer.writerow(query_param_row)
+    else: print(len(row))
+  remove_temp = subprocess.check_output(['rm', 'temp.csv'])
+
+def body_param_writer(body):
+
+  body_param_row = [app,title,file_name,base_url,'Body Param','','','','','']
+  printable = set(string.printable)
+  body_param_row[0] = ''.join(filter(lambda x: x in printable, body_param_row[0]))
+  body_param_row[1] = ''.join(filter(lambda x: x in printable, body_param_row[1]))
+  body_param_row[2] = ''.join(filter(lambda x: x in printable, body_param_row[2]))
+  for row in body:
+    if len(row) == 4:
+      body_param_row[5] = row[0]
+      body_param_row[6] = row[1]
+      body_param_row[7] = row[2]
+      body_param_row[8] = row[3]
+      with open(sys.argv[1], 'a') as output:
+        writer = csv.writer(output)
+        writer.writerow(body_param_row)
+    elif len(row) == 3:
+      body_param_row[5] = row[0]
+      body_param_row[6] = row[1]
+      body_param_row[7] = ''
+      body_param_row[8] = row[2]
+      with open(sys.argv[1], 'a') as output:
+        writer = csv.writer(output)
+        writer.writerow(body_param_row)
+    else: print(len(row))
+  remove_temp = subprocess.check_output(['rm', 'temp.csv'])
+
+def response_writer(body):
+
+  response_row = [app,title,file_name,base_url,'Response Element','','','','','']
+  printable = set(string.printable)
+  response_row[0] = ''.join(filter(lambda x: x in printable, response_row[0]))
+  response_row[1] = ''.join(filter(lambda x: x in printable, response_row[1]))
+  response_row[2] = ''.join(filter(lambda x: x in printable, response_row[2]))
+  for row in body:
+    if len(row) == 3:
+      response_row[5] = row[0]
+      response_row[6] = row[1]
+      response_row[8] = row[2]
+      with open(sys.argv[1], 'a') as output:
+        writer = csv.writer(output)
+        writer.writerow(response_row)
+    else: print(len(row))
+  remove_temp = subprocess.check_output(['rm', 'temp.csv'])
+
+def response_doc_writer(body):
+
+  response_doc_row = [app,title,file_name,base_url,'Response Document Fields','','','','','']
+  printable = set(string.printable)
+  response_doc_row[0] = ''.join(filter(lambda x: x in printable, response_doc_row[0]))
+  response_doc_row[1] = ''.join(filter(lambda x: x in printable, response_doc_row[1]))
+  response_doc_row[2] = ''.join(filter(lambda x: x in printable, response_doc_row[2]))
+  for row in body:
+    if len(row) == 3:
+      response_doc_row[5] = row[0]
+      response_doc_row[6] = row[1]
+      response_doc_row[8] = row[2]
+      with open(sys.argv[1], 'a') as output:
+        writer = csv.writer(output)
+        writer.writerow(response_doc_row)
+    else: print(len(row))
+  remove_temp = subprocess.check_output(['rm', 'temp.csv'])
 
 def main():
 
@@ -101,39 +199,36 @@ def main():
         print ('Usage: %s <output-file> <url>' % sys.argv[0])
         sys.exit(1)
 
-   
-    fields = ["Application", "Title", "Filename", "Base URL"]
-
-    values_list = []
-
-
     url = sys.argv[2]
     res = requests.get(url)
 
     soup = bs4.BeautifulSoup(res.text, 'lxml')
 
     #Application
+    global app 
     app = soup.select('title')[0].getText()[-13:]
-    values_list.append(app)
 
     #title
+    global title 
     title = soup.select('h1')[0].getText()[:-2]
-    values_list.append(title)
 
     #file name 
+    global file_name 
     file_name = url.split('/')[-1]
-    values_list.append(file_name)
 
     #base url
+    global base_url
     pattern = re.compile(r'Base URL')
-    base_url = soup.find_all(text=re.compile("^https?://[^/]+/([^/]+)/.*$"))[0]
-    values_list.append(base_url)
+    #handle exception for root resource
+    try:
+      base_url = soup.find_all(text=re.compile("^https?://[^/]+/([^/]+)/.*$"))[0]
+    except: 
+      base_url = "/"
 
     # Write to the output file 
-    with open(sys.argv[1], 'a') as output:
+    with open(sys.argv[1], 'a+') as output:
         writer = csv.writer(output)
-        writer.writerow(fields)
-        writer.writerow(values_list)
+        # writer.writerow(values_list)
 
     #tags_list = ['h2+p+div+table.docutils', 'h2+p+table.docutils', 'h2+div+table.docutils', 'h2+table.docutils', 'h2+table.docutils', 'h3+p+p+table.docutils',
     #'h3+p+table.docutils', 'div#response-elements+h3+p+table.docutils', 'div#response+h3+p+table.docutils']
@@ -147,68 +242,103 @@ def main():
     #Request Path Param
 
     if(path_param_checker(soup)):
-        path = subprocess.check_output(['htmltab', '--select', tag_path, url, sys.argv[1]])
+      body = subprocess.check_output(['htmltab', '--select', tag_path, url, "temp.csv"])
+      with open('temp.csv', 'r') as file:
+        reader = csv.reader(file)
+        path_param_writer(reader)
 
         #Request Query Param
         if(query_param_checker(soup)):        
-            query = subprocess.check_output(['htmltab', '--select', tag_query, url, sys.argv[1]])
+          body = subprocess.check_output(['htmltab', '--select', tag_query, url, "temp.csv"])
+          with open('temp.csv', 'r') as file:
+            reader = csv.reader(file)
+            query_param_writer(reader)
 
             if(body_param_checker(soup)):
-                body = subprocess.check_output(['htmltab', '--select', tag_body, url, sys.argv[1]])
+                body = subprocess.check_output(['htmltab', '--select', tag_body, url, "temp.csv"])
+                with open('temp.csv', 'r') as file:
+                  reader = csv.reader(file)
+                  body_param_writer(reader)
 
                 if(response_elems_checker(soup)):
                     for tags in tags_list:
                         try:
-                            reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                            reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                            with open('temp.csv', 'r') as file:
+                              reader = csv.reader(file)
+                              response_writer(reader)
                         except subprocess.CalledProcessError as e:
                             continue
                     if(contains_response_doc):
-                        with open(sys.argv[1], 'a') as output:
-                            writer = csv.writer(output)
-                            writer.writerow(["results Embedded Document"])
+                      reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                      with open('temp.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        response_doc_writer(reader)
+                        # with open(sys.argv[1], 'a') as output:
+                        #     writer = csv.writer(output)
+                        #     writer.writerow(["results Embedded Document"])
 
                         for tags in tags_list_2:
                             try:
-                                reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                              reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                              with open('temp.csv', 'r') as file:
+                                reader = csv.reader(file)
+                                response_doc_writer(reader)
                             except subprocess.CalledProcessError as e:
                                 continue
-
 
             else:
                 if(response_elems_checker(soup)):
                     for tags in tags_list:
                         try:
-                            reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                            reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                            with open('temp.csv', 'r') as file:
+                              reader = csv.reader(file)
+                              response_writer(reader)
                         except subprocess.CalledProcessError as e:
                             continue
                     if(contains_response_doc):
-                        with open(sys.argv[1], 'a') as output:
-                            writer = csv.writer(output)
-                            writer.writerow(["results Embedded Document"])
+                      reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                      with open('temp.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        response_doc_writer(reader)
                         for tags in tags_list_2:
                             try:
-                                reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                              reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                              with open('temp.csv', 'r') as file:
+                                reader = csv.reader(file)
+                                response_doc_writer(reader)
                             except subprocess.CalledProcessError as e:
                                 continue
 
         
         elif(body_param_checker(soup)):
-            body = subprocess.check_output(['htmltab', '--select', tag_body, url, sys.argv[1]])
+          body = subprocess.check_output(['htmltab', '--select', tag_body, url, "temp.csv"])
+          with open('temp.csv', 'r') as file:
+            reader = csv.reader(file)
+            body_param_writer(reader)
 
             #Response Elements
             if(response_elems_checker(soup)):
                 for tags in tags_list:
                     try:
-                        reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                      reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                      with open('temp.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        response_writer(reader)
                     except subprocess.CalledProcessError as e:
                         continue
                 if(contains_response_doc):
-                    with open(sys.argv[1], 'a') as output:
-                        writer = csv.writer(output)
-                        writer.writerow(["results Embedded Document"])
+                  reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                  with open('temp.csv', 'r') as file:
+                    reader = csv.reader(file)
+                    response_doc_writer(reader)
                     for tags in tags_list_2:
                         try:
-                            reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                          reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                          with open('temp.csv', 'r') as file:
+                            reader = csv.reader(file)
+                            response_doc_writer(reader)
                         except subprocess.CalledProcessError as e:
                             continue
 
@@ -218,41 +348,60 @@ def main():
             if(response_elems_checker(soup)):
                 for tags in tags_list:
                     try:
-                        reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                      reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                      with open('temp.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        response_writer(reader)
                     except subprocess.CalledProcessError as e:
                         continue
                 if(contains_response_doc):
-                    with open(sys.argv[1], 'a') as output:
-                        writer = csv.writer(output)
-                        writer.writerow(["results Embedded Document"])
+                  reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                  with open('temp.csv', 'r') as file:
+                    reader = csv.reader(file)
+                    response_doc_writer(reader)
                     for tags in tags_list_2:
                         try:
-                            reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                          reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                          with open('temp.csv', 'r') as file:
+                            reader = csv.reader(file)
+                            response_doc_writer(reader)
                         except subprocess.CalledProcessError as e:
                             continue
 
     elif(query_param_checker(soup)):
-        #Request Query Param
-        query = subprocess.check_output(['htmltab', '--select', tag_query, url, sys.argv[1]])
+      body = subprocess.check_output(['htmltab', '--select', tag_query, url, "temp.csv"])
+      with open('temp.csv', 'r') as file:
+        reader = csv.reader(file)
+        query_param_writer(reader)
 
         if(body_param_checker(soup)):
-            body = subprocess.check_output(['htmltab', '--select', tag_body, url, sys.argv[1]])
+          body = subprocess.check_output(['htmltab', '--select', tag_body, url, "temp.csv"])
+          with open('temp.csv', 'r') as file:
+            reader = csv.reader(file)
+            body_param_writer(reader)
 
             if(response_elems_checker(soup)):
                 for tags in tags_list:
                     try:
-                        reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                      reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                      with open('temp.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        response_doc_writer(reader)
                     except subprocess.CalledProcessError as e:
                         continue
 
                 if(contains_response_doc):
                     
-                    with open(sys.argv[1], 'a') as output:
-                        writer = csv.writer(output)
-                        writer.writerow(["results Embedded Document"])
+                  reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                  with open('temp.csv', 'r') as file:
+                    reader = csv.reader(file)
+                    response_doc_writer(reader)
                     for tags in tags_list_2:
                         try:
-                            reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                          reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                          with open('temp.csv', 'r') as file:
+                            reader = csv.reader(file)
+                            response_doc_writer(reader)
                         except subprocess.CalledProcessError as e:
                             continue
 
@@ -260,41 +409,58 @@ def main():
             if(response_elems_checker(soup)):
                 for tags in tags_list:
                     try:
-                        reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                      reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                      with open('temp.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        response_doc_writer(reader)
                     except subprocess.CalledProcessError as e:
                         continue
                 if(contains_response_doc):
-
                     for tags in tags_list_2:
                         try:
-                            reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                          reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                          with open('temp.csv', 'r') as file:
+                            reader = csv.reader(file)
+                            response_doc_writer(reader)
                         except subprocess.CalledProcessError as e:
                             continue
 
     elif(body_param_checker(soup)):
-        body = subprocess.check_output(['htmltab', '--select', tag_body, url, sys.argv[1]])
+      body = subprocess.check_output(['htmltab', '--select', tag_body, url, "temp.csv"])
+      with open('temp.csv', 'r') as file:
+        reader = csv.reader(file)
+        body_param_writer(reader)
 
         if(response_elems_checker(soup)):
             for tags in tags_list:
                 try:
-                    reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                  reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                  with open('temp.csv', 'r') as file:
+                    reader = csv.reader(file)
+                    response_doc_writer(reader)
                 except subprocess.CalledProcessError as e:
                     continue
             if(contains_response_doc):
                 for tags in tags_list_2:
                     try:
-                        reponse = subprocess.check_output(['htmltab', '--select', tags, url, sys.argv[1]])
+                      reponse = subprocess.check_output(['htmltab', '--select', tags, url, "temp.csv"])
+                      with open('temp.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        response_doc_writer(reader)
                     except subprocess.CalledProcessError as e:
                         continue
     else:
         if(response_elems_checker(soup)):
-            reponse = subprocess.check_output(['htmltab', '--select', '1', url, sys.argv[1]])
+                      reponse = subprocess.check_output(['htmltab', '--select', '1', url, "temp.csv"])
+                      with open('temp.csv', 'r') as file:
+                        reader = csv.reader(file)
+                        response_doc_writer(reader)
 
 
-    with open(sys.argv[1], 'a') as output:
-        writer = csv.writer(output)
-        writer.writerow(["~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"])
-        writer.writerow("")
+    # with open(sys.argv[1], 'a') as output:
+    #     writer = csv.writer(output)
+    #     writer.writerow(["~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"])
+    #     writer.writerow("")
 if __name__ == "__main__":
 	main()
 

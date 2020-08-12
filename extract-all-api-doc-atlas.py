@@ -1,6 +1,7 @@
 import os
 import sys
 import subprocess
+import csv
 
 
 if len(sys.argv) < 1:
@@ -11,7 +12,6 @@ api_url_first_half = "https://docs.atlas.mongodb.com"
 
 api_url_sec_half = ["/reference/api/access-tracking-get-database-history-clustername",
 "/reference/api/access-tracking-get-database-history-hostname",
-"/reference/api/access-tracking",
 "/reference/api/alert-configurations-create-config",
 "/reference/api/alert-configurations-delete-config",
 "/reference/api/alert-configurations-enable-disable-config",
@@ -24,10 +24,7 @@ api_url_sec_half = ["/reference/api/access-tracking-get-database-history-cluster
 "/reference/api/alerts-acknowledge-alert",
 "/reference/api/alerts-get-alert",
 "/reference/api/alerts-get-all-alerts",
-"/reference/api/alerts",
-"/reference/api/api-errors",
 "/reference/api/api-key-get-all",
-"/reference/api/api-key",
 "/reference/api/apiKey-delete-one-apiKey",
 "/reference/api/apiKeys-org-whitelist-create",
 "/reference/api/apiKeys-org-whitelist-delete-one",
@@ -37,17 +34,12 @@ api_url_sec_half = ["/reference/api/access-tracking-get-database-history-cluster
 "/reference/api/apiKeys-orgs-get-all",
 "/reference/api/apiKeys-orgs-get-one",
 "/reference/api/apiKeys-orgs-update-one",
-"/reference/api/apiKeys",
-"/reference/api/atlas-search",
 "/reference/api/auditing-get-auditLog",
 "/reference/api/auditing-set-auditLog",
-"/reference/api/auditing",
 "/reference/api/aws-custom-dns-get",
 "/reference/api/aws-custom-dns-update",
-"/reference/api/aws-custom-dns",
 "/reference/api/checkpoints-get-all",
 "/reference/api/checkpoints-get-one",
-"/reference/api/checkpoints",
 "/reference/api/clusters-create-one",
 "/reference/api/clusters-delete-one",
 "/reference/api/clusters-get-advanced-configuration-options",
@@ -57,29 +49,23 @@ api_url_sec_half = ["/reference/api/access-tracking-get-database-history-cluster
 "/reference/api/clusters-modify-advanced-configuration-options",
 "/reference/api/clusters-modify-one",
 "/reference/api/clusters-test-failover",
-"/reference/api/clusters",
-"/reference/api/custom-role-actions",
 "/reference/api/custom-roles-create-a-role",
 "/reference/api/custom-roles-delete-a-role",
 "/reference/api/custom-roles-get-all-roles",
 "/reference/api/custom-roles-get-single-role",
 "/reference/api/custom-roles-update-a-role",
-"/reference/api/custom-roles",
 "/reference/api/database-users-create-a-user",
 "/reference/api/database-users-delete-a-user",
 "/reference/api/database-users-get-all-users",
 "/reference/api/database-users-get-single-user",
 "/reference/api/database-users-update-a-user",
-"/reference/api/database-users",
 "/reference/api/delete-api-key",
 "/reference/api/enable-configure-encryptionatrest",
 "/reference/api/enable-disable-api-key",
-"/reference/api/encryption-at-rest",
 "/reference/api/events-orgs-get-all",
 "/reference/api/events-orgs-get-one",
 "/reference/api/events-projects-get-all",
 "/reference/api/events-projects-get-one",
-"/reference/api/events",
 "/reference/api/fts-analyzers-get-all",
 "/reference/api/fts-analyzers-update-all",
 "/reference/api/fts-indexes-create-one",
@@ -94,28 +80,21 @@ api_url_sec_half = ["/reference/api/access-tracking-get-database-history-cluster
 "/reference/api/global-clusters-delete-customzonemappings",
 "/reference/api/global-clusters-delete-namespace",
 "/reference/api/global-clusters-retrieve-namespaces",
-"/reference/api/global-clusters",
-"/reference/api/indexes",
-"/reference/api/invoices",
 "/reference/api/ldaps-configuration-get-current",
 "/reference/api/ldaps-configuration-remove-usertodnmapping",
 "/reference/api/ldaps-configuration-request-verification",
 "/reference/api/ldaps-configuration-save",
 "/reference/api/ldaps-configuration-verification-status",
-"/reference/api/ldaps-configuration",
 "/reference/api/logs",
 "/reference/api/maintenance-window-clear",
 "/reference/api/maintenance-window-defer",
 "/reference/api/maintenance-window-update",
 "/reference/api/maintenance-windows-view-in-one-project",
-"/reference/api/maintenance-windows",
-"/reference/api/monitoring-and-logs",
 "/reference/api/online-archive-create-one",
 "/reference/api/online-archive-delete-one",
 "/reference/api/online-archive-get-all-for-cluster",
 "/reference/api/online-archive-get-one",
 "/reference/api/online-archive-update-one",
-"/reference/api/online-archive",
 "/reference/api/organization-delete-one",
 "/reference/api/organization-get-all-invoices",
 "/reference/api/organization-get-all-projects",
@@ -125,11 +104,9 @@ api_url_sec_half = ["/reference/api/access-tracking-get-database-history-cluster
 "/reference/api/organization-get-pending-invoices",
 "/reference/api/organization-rename",
 "/reference/api/organization-users-get-all-users",
-"/reference/api/organizations",
 "/reference/api/pa-get-slow-query-logs",
 "/reference/api/pa-namespaces-get-all",
 "/reference/api/pa-suggested-indexes-get-all",
-"/reference/api/performance-advisor",
 "/reference/api/private-endpoint-create-one-interface-endpoint",
 "/reference/api/private-endpoint-create-one-private-endpoint-connection",
 "/reference/api/private-endpoint-delete-one-interface-endpoint",
@@ -137,7 +114,6 @@ api_url_sec_half = ["/reference/api/access-tracking-get-database-history-cluster
 "/reference/api/private-endpoint-get-all-private-endpoint-connections",
 "/reference/api/private-endpoint-get-one-interface-endpoint",
 "/reference/api/private-endpoint-get-one-private-endpoint-connection",
-"/reference/api/private-endpoint",
 "/reference/api/process-databases-measurements",
 "/reference/api/process-databases",
 "/reference/api/process-disks-measurements",
@@ -153,7 +129,6 @@ api_url_sec_half = ["/reference/api/access-tracking-get-database-history-cluster
 "/reference/api/project-get-one",
 "/reference/api/project-get-teams",
 "/reference/api/project-remove-user",
-"/reference/api/projects",
 "/reference/api/rolling-index-create-one",
 "/reference/api/root",
 "/reference/api/set-private-ip-mode-for-project",
@@ -168,19 +143,16 @@ api_url_sec_half = ["/reference/api/access-tracking-get-database-history-cluster
 "/reference/api/teams-remove-user",
 "/reference/api/teams-rename-one",
 "/reference/api/teams-update-roles",
-"/reference/api/teams",
 "/reference/api/third-party-integration-settings-create",
 "/reference/api/third-party-integration-settings-delete",
 "/reference/api/third-party-integration-settings-get-all",
 "/reference/api/third-party-integration-settings-get-one",
 "/reference/api/third-party-integration-settings-update",
-"/reference/api/third-party-integration-settings",
 "/reference/api/user-create",
 "/reference/api/user-get-all",
 "/reference/api/user-get-by-id",
 "/reference/api/user-get-one-by-name",
 "/reference/api/user-update",
-"/reference/api/user",
 "/reference/api/vpc-create-container",
 "/reference/api/vpc-create-peering-connection",
 "/reference/api/vpc-delete-one-container",
@@ -192,19 +164,16 @@ api_url_sec_half = ["/reference/api/access-tracking-get-database-history-cluster
 "/reference/api/vpc-get-containers-list",
 "/reference/api/vpc-update-container",
 "/reference/api/vpc-update-peering-connection",
-"/reference/api/vpc",
 "/reference/api/whitelist-add-one",
 "/reference/api/whitelist-api",
 "/reference/api/whitelist-delete-one",
 "/reference/api/whitelist-get-all",
 "/reference/api/whitelist-get-one-entry",
-"/reference/api/whitelist",
 "/reference/api/x509-configuration-create-certificate",
 "/reference/api/x509-configuration-disable-advanced",
 "/reference/api/x509-configuration-get-certificates",
 "/reference/api/x509-configuration-get-current",
 "/reference/api/x509-configuration-save",
-"/reference/api/x509-configuration",
 "/reference/api/cloud-backup/backup/delete-one-backup",
 "/reference/api/cloud-backup/backup/get-all-backups",
 "/reference/api/cloud-backup/backup/get-one-backup",
@@ -244,32 +213,12 @@ for sec_half in api_url_sec_half:
 	api_url_full = api_url_first_half + sec_half
 	api_url_list.append(api_url_full)
 
+fields = ["Application","Title","Filename","Base Url","Type","Name","Data Type","Necessity","Description","Default"]
+
+with open(sys.argv[1], 'a') as output:
+    writer = csv.writer(output)
+    writer.writerow(fields)
+
 for url in api_url_list:
 	print(['python', sys.argv[0], url, sys.argv[1]])
 	output = subprocess.check_output(['python', 'api-extractor.py', sys.argv[1], url])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
