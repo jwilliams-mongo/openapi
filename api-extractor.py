@@ -95,16 +95,14 @@ def response_elems_checker(soup):
 
 def path_param_writer(body):
 
-  path_param_row = [app,title,file_name,base_url,'Path Param','','','','','']
+  path_param_row = [app,title,collection,file_name,base_url,resource_path,'Path Param','','','','','']
   printable = set(string.printable)
-  path_param_row[0] = ''.join(filter(lambda x: x in printable, path_param_row[0]))
   path_param_row[1] = ''.join(filter(lambda x: x in printable, path_param_row[1]))
-  path_param_row[2] = ''.join(filter(lambda x: x in printable, path_param_row[2]))
   for row in body:
     if len(row) == 3:
-      path_param_row[5] = row[0]
-      path_param_row[6] = row[1]
-      path_param_row[8] = row[2]
+      path_param_row[7] = row[0]
+      path_param_row[9] = row[1]
+      path_param_row[10] = row[2]
       with open(sys.argv[1], 'a') as output:
         writer = csv.writer(output)
         writer.writerow(path_param_row)
@@ -113,17 +111,15 @@ def path_param_writer(body):
 
 def query_param_writer(body):
 
-  query_param_row = [app,title,file_name,base_url,'Query Param','','','','','']
+  query_param_row = [app,title,collection,file_name,base_url,resource_path,'Query Param','','','','','']
   printable = set(string.printable)
-  query_param_row[0] = ''.join(filter(lambda x: x in printable, query_param_row[0]))
   query_param_row[1] = ''.join(filter(lambda x: x in printable, query_param_row[1]))
-  query_param_row[2] = ''.join(filter(lambda x: x in printable, query_param_row[2]))
   for row in body:
     if len(row) == 4:
-      query_param_row[5] = row[0]
-      query_param_row[6] = row[1]
-      query_param_row[8] = row[2]
-      query_param_row[9] = row[3]
+      query_param_row[7] = row[0]
+      query_param_row[8] = row[1]
+      query_param_row[10] = row[2]
+      query_param_row[11] = row[3]
       with open(sys.argv[1], 'a') as output:
         writer = csv.writer(output)
         writer.writerow(query_param_row)
@@ -132,25 +128,23 @@ def query_param_writer(body):
 
 def body_param_writer(body):
 
-  body_param_row = [app,title,file_name,base_url,'Body Param','','','','','']
+  body_param_row = [app,title,collection,file_name,base_url,resource_path,'Body Param','','','','','']
   printable = set(string.printable)
-  body_param_row[0] = ''.join(filter(lambda x: x in printable, body_param_row[0]))
   body_param_row[1] = ''.join(filter(lambda x: x in printable, body_param_row[1]))
-  body_param_row[2] = ''.join(filter(lambda x: x in printable, body_param_row[2]))
   for row in body:
     if len(row) == 4:
-      body_param_row[5] = row[0]
-      body_param_row[6] = row[1]
-      body_param_row[7] = row[2]
-      body_param_row[8] = row[3]
+      body_param_row[7] = row[0]
+      body_param_row[8] = row[1]
+      body_param_row[9] = row[2]
+      body_param_row[10] = row[3]
       with open(sys.argv[1], 'a') as output:
         writer = csv.writer(output)
         writer.writerow(body_param_row)
     elif len(row) == 3:
-      body_param_row[5] = row[0]
-      body_param_row[6] = row[1]
-      body_param_row[7] = ''
-      body_param_row[8] = row[2]
+      body_param_row[7] = row[0]
+      body_param_row[8] = row[1]
+      body_param_row[9] = ''
+      body_param_row[10] = row[2]
       with open(sys.argv[1], 'a') as output:
         writer = csv.writer(output)
         writer.writerow(body_param_row)
@@ -159,16 +153,14 @@ def body_param_writer(body):
 
 def response_writer(body):
 
-  response_row = [app,title,file_name,base_url,'Response Element','','','','','']
+  response_row = [app,title,collection,file_name,base_url,resource_path,'Response Element','','','','','']
   printable = set(string.printable)
-  response_row[0] = ''.join(filter(lambda x: x in printable, response_row[0]))
   response_row[1] = ''.join(filter(lambda x: x in printable, response_row[1]))
-  response_row[2] = ''.join(filter(lambda x: x in printable, response_row[2]))
   for row in body:
     if len(row) == 3:
-      response_row[5] = row[0]
-      response_row[6] = row[1]
-      response_row[8] = row[2]
+      response_row[7] = row[0]
+      response_row[8] = row[1]
+      response_row[10] = row[2]
       with open(sys.argv[1], 'a') as output:
         writer = csv.writer(output)
         writer.writerow(response_row)
@@ -177,16 +169,14 @@ def response_writer(body):
 
 def response_doc_writer(body):
 
-  response_doc_row = [app,title,file_name,base_url,'Response Document Fields','','','','','']
+  response_doc_row = [app,title,collection,file_name,base_url,resource_path,'Response Document Fields','','','','','']
   printable = set(string.printable)
-  response_doc_row[0] = ''.join(filter(lambda x: x in printable, response_doc_row[0]))
   response_doc_row[1] = ''.join(filter(lambda x: x in printable, response_doc_row[1]))
-  response_doc_row[2] = ''.join(filter(lambda x: x in printable, response_doc_row[2]))
   for row in body:
     if len(row) == 3:
-      response_doc_row[5] = row[0]
-      response_doc_row[6] = row[1]
-      response_doc_row[8] = row[2]
+      response_doc_row[7] = row[0]
+      response_doc_row[8] = row[1]
+      response_doc_row[10] = row[2]
       with open(sys.argv[1], 'a') as output:
         writer = csv.writer(output)
         writer.writerow(response_doc_row)
@@ -214,21 +204,40 @@ def main():
 
     #file name 
     global file_name 
-    file_name = url.split('/')[-1]
+    file_name = url
 
-    #base url
+    #base url and resource path
     global base_url
     pattern = re.compile(r'Base URL')
-    #handle exception for root resource
+    global resource_path
+
+    #handle exception
     try:
       base_url = soup.find_all(text=re.compile("^https?://[^/]+/([^/]+)/.*$"))[0]
-    except: 
-      base_url = "/"
+    except:
+      base_url = '/'
+
+    resource_block = soup.select_one(".highlight")
+    resource = str(resource_block)
+    #handle exception for root resource
+    try:
+       resource_path = re.search("<\/span>.+?(\/.+)", resource).group(1)
+       if resource_path[:15] == "/api/atlas/v1.0":
+          resource_path = resource_path[15:]
+       if re.search("v1.0(.+)",base_url):
+         resource_path = re.search("v1.0(.+)",base_url).group(1) + resource_path
+    except: resource_path = '/'
 
     # Write to the output file 
-    with open(sys.argv[1], 'a+') as output:
-        writer = csv.writer(output)
+    # with open(sys.argv[1], 'a+') as output:
+        # writer = csv.writer(output)
         # writer.writerow(values_list)
+
+    global collection
+    collection_select = str(soup.select_one(".bc"))
+    collection_matches = re.findall("<li><a.+?\">(.+?)<",collection_select)
+    collection = collection_matches[-1]
+    if collection == "Public API Resources": collection = "Root"
 
     #tags_list = ['h2+p+div+table.docutils', 'h2+p+table.docutils', 'h2+div+table.docutils', 'h2+table.docutils', 'h2+table.docutils', 'h3+p+p+table.docutils',
     #'h3+p+table.docutils', 'div#response-elements+h3+p+table.docutils', 'div#response+h3+p+table.docutils']

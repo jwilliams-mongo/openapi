@@ -129,7 +129,7 @@ api_url_sec_half = ["/reference/api/admin/backup/backup-daemon-config",
 "/reference/api/global-alert-configurations-create-one",
 "/reference/api/global-alert-configurations-delete-one",
 "/reference/api/global-alert-configurations-get-all",
-"/reference/api/global-alert-configurations-get-one"
+"/reference/api/global-alert-configurations-get-one",
 "/reference/api/global-alert-configurations-toggle-one",
 "/reference/api/global-alert-configurations-update-one",
 "/reference/api/global-alerts-ack-one",
@@ -258,7 +258,7 @@ for sec_half in api_url_sec_half:
 	api_url_full = api_url_first_half + sec_half
 	api_url_list.append(api_url_full)
 
-fields = ["Application","Title","Filename","Base Url","Type","Name","Data Type","Necessity","Description","Default"]
+fields = ["Application","Title","Collection","Filename","Base Url","Resource","Type","Name","Data Type","Necessity","Description","Default"]
 
 with open(sys.argv[1], 'a') as output:
     writer = csv.writer(output)
