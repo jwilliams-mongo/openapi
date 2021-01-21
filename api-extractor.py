@@ -221,7 +221,14 @@ def main():
 
     #Application
     global app 
-    app = soup.select('title')[0].getText()[-13:]
+#    app = soup.select('title')[0].getText()[-13:]
+
+    if 'opsmanager' in url:
+      app = "Ops Manager"
+    elif 'cloudmanager' in url:
+      app = "Cloud Manager"
+    elif 'atlas' in url:
+      app = "Atlas"
 
     #title
     global title 

@@ -1,167 +1,37 @@
 import os
+from glob import glob
 import sys
+import getpass
 import subprocess
 import csv
-
 
 if len(sys.argv) < 1:
     print ('Usage: %s <output-file>' % sys.argv[0])
     sys.exit(1)
 
-api_url_first_half = "https://docs.cloudmanager.mongodb.com/reference/api/"
+username = getpass.getuser()
 
-api_url_sec_half = ["agentapikeys/create-one-agent-api-key",
-"agentapikeys/delete-one-agent-api-key",
-"agentapikeys/get-all-agent-api-keys-for-project",
-"agents-get-all",
-"agents-get-by-type",
-"alert-configurations-create-config",
-"alert-configurations-delete-config",
-"alert-configurations-enable-disable-config",
-"alert-configurations-get-all-configs",
-"alert-configurations-get-config",
-"alert-configurations-get-matchers-field-names",
-"alert-configurations-get-open-alerts",
-"alert-configurations-update-config",
-"alerts-acknowledge-alert",
-"alerts-get-alert",
-"alerts-get-all-alerts",
-"api-key/api-key-get-all",
-"api-key/delete-one-api-key",
-"api-key/enable-disable-api-key",
-"api-keys/org/create-one-org-api-key",
-"api-keys/org/create-org-api-key-whitelist",
-"api-keys/org/delete-one-api-key",
-"api-keys/org/delete-one-org-api-key-whitelist",
-"api-keys/org/get-all-org-api-key-whitelist",
-"api-keys/org/get-all-org-api-keys",
-"api-keys/org/get-one-org-api-key-whitelist",
-"api-keys/org/get-one-org-api-key",
-"api-keys/org/update-one-org-api-key",
-"api-keys/project/assign-one-org-apiKey-to-one-project",
-"api-keys/project/create-one-apiKey-in-one-project",
-"api-keys/project/delete-one-apiKey-in-one-project",
-"api-keys/project/get-all-apiKeys-in-one-project",
-"api-keys/project/update-one-apiKey-in-one-project",
-"automation-status-full",
-"automation-status",
-"backup/get-all-backup-configs-for-group",
-"backup/get-one-backup-config-by-cluster-id",
-"backup/get-snapshot-schedule",
-"backup/update-backup-config",
-"backup/update-one-snapshot-schedule-by-cluster-id",
-"clusters/clusters-get-all-key",
-"clusters/clusters-get-all",
-"clusters/clusters-get-one",
-"clusters/clusters-update-one",
-"database-get-by-name",
-"databases-get-all-on-host",
-"disk-get-one",
-"disks-get-all",
-"events/get-all-events-for-org",
-"events/get-all-events-for-project",
-"events/get-one-event-for-org",
-"events/get-one-event-for-project",
-"groups/add-users-to-one-group",
-"groups/change-one-group-name",
-"groups/create-one-group",
-"groups/delete-one-group",
-"groups/get-all-groups-for-current-user",
-"groups/get-all-users-in-one-group",
-"groups/get-one-group-by-agent-api-key",
-"groups/get-one-group-by-id",
-"groups/get-one-group-by-name",
-"groups/project-add-team",
-"groups/project-get-teams",
-"groups/remove-one-user-from-one-group",
-"hosts/create-one-host",
-"hosts/delete-one-host",
-"hosts/get-all-hosts-in-group",
-"hosts/get-one-host-by-hostname-port",
-"hosts/get-one-host-by-id",
-"hosts/update-one-host",
-"log-collections/log-collections-delete-one",
-"log-collections/log-collections-download-job",
-"log-collections/log-collections-get-all",
-"log-collections/log-collections-get-one",
-"log-collections/log-collections-retry",
-"log-collections/log-collections-submit",
-"log-collections/log-collections-update-one",
-"maintenance-windows-create-one",
-"maintenance-windows-delete-one",
-"maintenance-windows-get-all",
-"maintenance-windows-get-one",
-"maintenance-windows-update-one",
-"measures/get-database-measurements",
-"measures/get-disk-measurements",
-"measures/get-host-process-system-measurements",
-"measures/get-measurement-types",
-"measures/measurement-types",
-"nav/automation",
-"nav/backup-and-restore",
-"nav/deployments",
-"nav/groups-and-users",
-"nav/measurements-and-alerts",
-"nav/organizations-and-teams",
-"nav/prog-api-keys",
-"org-api-key-whitelists",
-"organizations/organization-create-one",
-"organizations/organization-delete-one",
-"organizations/organization-get-all-invoices",
-"organizations/organization-get-all-projects",
-"organizations/organization-get-all-users",
-"organizations/organization-get-all",
-"organizations/organization-get-one-invoice",
-"organizations/organization-get-one",
-"organizations/organization-get-pending-invoices",
-"organizations/organization-rename",
-"performance-advisor/get-slow-queries",
-"performance-advisor/get-suggested-indexes",
-"performance-advisor/pa-namespaces-get-all",
-"restorejobs/create-one-restore-job-for-one-cluster",
-"restorejobs/create-one-restore-job-for-one-sccc-config-server",
-"restorejobs/get-all-restore-jobs-for-one-cluster",
-"restorejobs/get-all-restore-jobs-for-one-sccc-config-server",
-"restorejobs/get-one-single-restore-job-for-one-cluster",
-"restorejobs/get-one-single-restore-job-for-one-sccc-config-server",
-"root",
-"snapshots/change-expiry-for-one-snapshot",
-"snapshots/get-all-snapshots-for-config-server",
-"snapshots/get-all-snapshots-for-one-cluster",
-"snapshots/get-one-snapshot-for-config-server",
-"snapshots/get-one-snapshot-for-one-cluster",
-"snapshots/remove-one-snapshot-from-one-cluster",
-"teams/teams-add-user",
-"teams/teams-create-one",
-"teams/teams-delete-one",
-"teams/teams-get-all-users",
-"teams/teams-get-all",
-"teams/teams-get-one-by-id",
-"teams/teams-get-one-by-name",
-"teams/teams-remove-from-project",
-"teams/teams-remove-user",
-"teams/teams-rename-one",
-"teams/teams-update-roles",
-"third-party-integration-settings-create",
-"third-party-integration-settings-delete",
-"third-party-integration-settings-get-all",
-"third-party-integration-settings-get-one",
-"third-party-integration-settings-update",
-"user-create",
-"user-get-by-id",
-"user-get-by-name",
-"user-update",
-"whitelist-add-entries",
-"whitelist-delete-entry",
-"whitelist-get-for-current-user",
-"whitelist-get-for-ip-address"
-]
+api_url_first_half = 'https://docs-cloudmanager-staging.mongodb.com/' + username + '/master/reference/api'
+
+# update to match absolute path to cloud manager api files in your mms-docs build directory
+path = '/Users/' + username + '/projects/mms-docs/build/master/html-cloud/reference/api'
+
+api_file_list = [y for x in os.walk(path) for y in glob(os.path.join(x[0], '*.html'))]
+
+api_url_sec_half = []
+for fn in api_file_list:
+  api_url = fn[len(path):]
+  # adding case for abandoned(?) ssh-keys page
+  if api_url != '/ssh-keys.html':
+    api_url_sec_half.append(api_url)
 
 api_url_list = []
 
 for sec_half in api_url_sec_half:
-	api_url_full = api_url_first_half + sec_half
-	api_url_list.append(api_url_full)
+ 	api_url_full = api_url_first_half + sec_half
+ 	api_url_list.append(api_url_full)
+
+api_url_list.sort()
 
 fields = ["Application","Title","Collection","Filename","Method","Base Url","Resource","Type","Name","Data Type","Necessity","Description","Default"]
 
