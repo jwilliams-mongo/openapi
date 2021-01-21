@@ -127,5 +127,5 @@ If your receive an error, run the core extractor against the endpoint
 that failed to get detailed error information:
 
 ```
-$ python api-extractor.py error-test.csv https://<url>/reference/api/ssh-keys.htm
+$ python api-extractor.py error-test.csv https://<url>/reference/api/ssh-keys.html
 ```
