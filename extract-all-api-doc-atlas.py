@@ -4,17 +4,19 @@ import sys
 import getpass
 import subprocess
 import csv
+from pathlib import Path 
 
 if len(sys.argv) < 1:
     print ('Usage: %s <output-file>' % sys.argv[0])
     sys.exit(1)
 
 username = getpass.getuser()
+home = str(Path.home())
 
 api_url_first_half = 'https://docs-staging.atlas.mongodb.com/' + username + '/master/reference/api'
 
 # update to match absolute path to api files in your cloud-docs build directory
-path = '/Users/' + username + '/projects/cloud-docs/build/master/html/reference/api'
+path = home + '/projects/cloud-docs/build/master/html/reference/api'
 
 api_file_list = [y for x in os.walk(path) for y in glob(os.path.join(x[0], '*.html'))]
 

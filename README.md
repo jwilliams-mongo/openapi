@@ -27,23 +27,31 @@ For each endpoint, the core extractor:
 
 ## Prerequisites
 
-The product-specific scripts assume that you have cloned the MongoDB
-Cloud Docs repositories to a `projects` directory in your home
-directory:
+1. The product-specific scripts assume that you have cloned the MongoDB
+   Cloud Docs repositories to a `projects` directory in your home
+   directory:
 
-```
-~/projects/cloud-docs
-~/projects/mms-docs
-```
+   ```
+   ~/projects/cloud-docs
+   ~/projects/mms-docs
+   ```
 
-If you have cloned the MongoDB Cloud Docs repositories to different
-directories, modify the `path` variable in each product-specific script,
-as appropriate:
+   If you have cloned the MongoDB Cloud Docs repositories to different
+   directories, modify the `path` variable in each product-specific script,
+   as appropriate:
 
-```
-# update to match absolute path to api files in your cloud-docs build directory
-path = '/Users/' + username + '/path/to/repos/cloud-docs/build/master/html/reference/api'
-```
+   ```
+   # update to match absolute path to api files in your cloud-docs build directory
+   path = home + '/path/to/repos/cloud-docs/build/master/html/reference/api'
+   ```
+
+2. Run the `setup.py` script:
+
+   ```
+   python3 setup.py
+   ```
+
+   This script uses `pip3` to install the Python modules that the MongoDB API Docs Extractor requires.
 
 ## Run the Scripts
 
