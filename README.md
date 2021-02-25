@@ -85,19 +85,19 @@ legacy build tools.
    For Atlas:
 
    ```
-   $ python extract-all-api-doc-atlas.py <output-file-name>.csv
+   $ python3 extract-all-api-doc-atlas.py <output-file-name>.csv
    ```
 
    For Ops Manager:
 
    ```
-   $ python extract-all-api-doc-om.py <output-file-name>.csv
+   $ python3 extract-all-api-doc-om.py <output-file-name>.csv
    ```
 
    For Cloud Manager:
 
    ```
-   $ python extract-all-api-doc-cm.py <output-file-name>.csv
+   $ python3 extract-all-api-doc-cm.py <output-file-name>.csv
    ```
 
    The script's output is written to the terminal. It should take 10-20
@@ -135,5 +135,5 @@ If your receive an error, run the core extractor against the endpoint
 that failed to get detailed error information:
 
 ```
-$ python api-extractor.py error-test.csv https://<url>/reference/api/ssh-keys.html
+$ python3 api-extractor.py error-test.csv https://<url>/reference/api/ssh-keys.html
 ```
